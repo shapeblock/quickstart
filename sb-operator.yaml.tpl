@@ -18,7 +18,7 @@ spec:
       serviceAccountName: sb-admin
       containers:
       - name: sb-operator
-        image: shapeblock/sb-operator:07-aug-2024-158.30
+        image: ${image}:${tag}
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3

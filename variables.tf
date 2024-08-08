@@ -35,12 +35,22 @@ variable "cluster_dns" {
 
 variable "sb_image" {
   description = "Shapeblock image repo"
-  default     = "ghcr.io/shapeblock/sb/backend"
+  default     = "ghcr.io/shapeblock/backend"
 }
 
 variable "sb_tag" {
   description = "Shapeblock image tag"
-  default     = "f8980459364d4b466f37650191d536f7c1b1814a"
+  default     = "v1.0.0"
+}
+
+variable "sb_operator_image" {
+  description = "Shapeblock operator image repo"
+  default     = "ghcr.io/shapeblock/operator"
+}
+
+variable "sb_operator_tag" {
+  description = "Shapeblock operator image tag"
+  default     = "v1.0.0"
 }
 
 variable "sb_user" {

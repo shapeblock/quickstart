@@ -267,8 +267,17 @@ resource "kubectl_manifest" "shapeblock_crs" {
 resource "random_uuid" "cluster_uuid" {
 }
 
+locals {
+  sb_operator_values = templatefile("${path.module}/sb-operator.yaml.tpl", {
+    image             = var.sb_operator_image,
+    tag               = var.sb_operator_tag,
+    sb_url = "http://shapeblock-api",
+    cluster_uuid = random_uuid.cluster_uuid.result,
+    namespace = "shapeblock"
+  })
+}
 // SB operator
 resource "kubectl_manifest" "sb_operator" {
-  yaml_body  = templatefile("${path.module}/sb-operator.yaml.tpl", { sb_url = "http://shapeblock-api", cluster_uuid = random_uuid.cluster_uuid.result, namespace = "shapeblock" })
+  yaml_body  = local.sb_operator_values
   depends_on = [kubectl_manifest.shapeblock_crs]
 }
