@@ -1,0 +1,6 @@
+terraform.tfvars
+.terraform
+.terraform.lock.hcl
+kubeconfig
+terraform.tfstate*
+sb-cli*

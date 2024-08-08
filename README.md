@@ -1,2 +1,4 @@
 # quickstart
-Terraform scripts to setup Shapeblock in a Kubernetes cluster
+
+Terraform scripts to setup Shapeblock in a Kubernetes cluster.
+

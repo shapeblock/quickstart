@@ -1,0 +1,8 @@
+apiVersion: kpack.io/v1alpha2
+kind: ClusterStore
+metadata:
+  name: paketo-nginx
+spec:
+  sources:
+  - image: index.docker.io/paketobuildpacks/web-servers
+  - image: index.docker.io/shapeblock/chmod:0.0.5

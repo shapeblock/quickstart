@@ -1,0 +1,9 @@
+apiVersion: kpack.io/v1alpha2
+kind: ClusterStore
+metadata:
+  name: paketo-go
+spec:
+  sources:
+  - image: index.docker.io/paketobuildpacks/go
+  - image: index.docker.io/paketobuildpacks/nodejs
+  - image: index.docker.io/shapeblock/chmod:0.0.5
