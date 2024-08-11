@@ -15,7 +15,7 @@ spec:
       labels:
         application: sb-operator
     spec:
-      serviceAccountName: sb-admin
+      serviceAccountName: shapeblock-admin
       containers:
       - name: sb-operator
         image: ${image}:${tag}

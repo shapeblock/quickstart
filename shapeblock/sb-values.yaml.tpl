@@ -3,7 +3,7 @@ defaultImageTag: ${tag}
 defaultImagePullPolicy: Always
 deployments:
   django:
-    serviceAccountName: sb-admin
+    serviceAccountName: shapeblock-admin
     initContainers:
     - name: migrate
       command: ['python', 'manage.py', 'migrate']
@@ -111,3 +111,9 @@ ingresses:
     ingressClassName: nginx
     name: backend
 %{ endif }
+
+
+serviceAccount:
+  admin:
+    clusterRole:
+      name: cluster-admin

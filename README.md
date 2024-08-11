@@ -1,40 +1,68 @@
-# quickstart
+# Quickstart examples for Shapeblock
 
-Terraform scripts to setup Shapeblock in a Kubernetes cluster.
+Quickly stand up an HA-style installation of Rancher by SUSE products on your infrastructure provider of choice.
 
-# Prerequisites
-- a new Linux server, with at least 2GB RAM and 30GB disk space.
-- Terraform >= 1.0
-- k3sup(https://github.com/alexellis/k3sup)
+Intended for experimentation/evaluation ONLY.
 
-# Installation
+**You will be responsible for any and all infrastructure costs incurred by these resources.** As a result, this repository minimizes costs by standing up the minimum required resources for a given provider.
 
-1. Install k3s in the Linux machine using the following command:
+## Cloud quickstart
+
+Cloud quickstarts to install Shapeblock are provided for:
+
+- [**DigitalOcean** (`do`)](./do)
+- AWS(Coming soon)
+- Hetzner Cloud(Coming soon)
+- Linode(Coming soon)
+
+**You will be responsible for any and all infrastructure costs incurred by these resources.**
+
+## Requirements - Cloud
+
+- Terraform >=1.0.0
+- Credentials for the cloud provider used for the quickstart
+
+### Using cloud quickstarts
+
+To begin with any quickstart, perform the following steps:
+
+1. Clone or download this repository to a local folder
+2. Choose a cloud provider and navigate into the provider's folder
+3. Copy or rename `terraform.tfvars.sample` to `terraform.tfvars` and fill in all required variables
+4. Run `terraform init`
+5. Run `terraform apply`
+
+Here's how the output of a successful run looks like:
 
 ```sh
-$ k3sup install --host <your-server-public-ip> \
-        --user root \
-        --cluster \
-        --local-path kubeconfig \
-        --context default \
-        --ssh-key <ssh-key--with-full-path> \
-        --k3s-extra-args "--disable traefik"
-```
-This will install a single node cluster and download the kuberconfig file.
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 
-2. Copy over the `terraform.tfvars.sample` to `terraform.tfvars`. Make sure to customize this file to suit your needs.
+Outputs:
 
-3. Initiate terraform.
+instructions = <<EOT
+Shapeblock has been successfully installed.
 
-```sh
-$ terraform init
-```
+Here are the next steps:
+1. If you've added a domain, please go to your DNS provider and add the following DNS entries:
+    A record - test1.example.com 1.2.3.4
+    CNAME - *.test1.example.com test1.example.com
+2. You can access the Shapeblock API using the sb-cli command. The latest version can be downloaded here: https://github.com/shapeblock/sb-cli/releases/latest
+3. You can login to Shapeblock using sb-cli with the following credentials:
+    server: https://sb.example.com
+    username: admin
+    password: xu4TVCvzloySWhW3
+For more details, check the docs: https://docs.shapeblock.com/
 
-4. Do a terraform apply.
-
-```sh
-$ terraform apply
+EOT
 ```
 
-This will show details on how to connect to shapeblock server after a successful run.
+For more details on each cloud provider, refer to the documentation in their respective folders.
 
+## Remove
+
+When you're finished exploring the Rancher server, use terraform to tear down all resources in the quickstart.
+
+**NOTE: Any resources not provisioned by the quickstart are not guaranteed to be destroyed when tearing down the quickstart.**
+Make sure you tear down any resources you provisioned manually before running the destroy command.
+
+Run `terraform destroy -auto-approve` to remove all resources without prompting for confirmation.

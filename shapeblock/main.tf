@@ -1,14 +1,30 @@
+locals {
+  kubeconfig = yamldecode(var.kubeconfig)
+}
+
 provider "kubernetes" {
-  config_path = "kubeconfig"
+  host = local.kubeconfig.clusters.0.cluster.server
+
+  client_certificate     = base64decode(local.kubeconfig.users.0.user.client-certificate-data)
+  client_key             = base64decode(local.kubeconfig.users.0.user.client-key-data)
+  cluster_ca_certificate = base64decode(local.kubeconfig.clusters.0.cluster.certificate-authority-data)
 }
 
 provider "kubectl" {
-  config_path = "kubeconfig"
+  host = local.kubeconfig.clusters.0.cluster.server
+
+  client_certificate     = base64decode(local.kubeconfig.users.0.user.client-certificate-data)
+  client_key             = base64decode(local.kubeconfig.users.0.user.client-key-data)
+  cluster_ca_certificate = base64decode(local.kubeconfig.clusters.0.cluster.certificate-authority-data)
 }
 
 provider "helm" {
   kubernetes {
-    config_path = "kubeconfig"
+    host = local.kubeconfig.clusters.0.cluster.server
+
+    client_certificate     = base64decode(local.kubeconfig.users.0.user.client-certificate-data)
+    client_key             = base64decode(local.kubeconfig.users.0.user.client-key-data)
+    cluster_ca_certificate = base64decode(local.kubeconfig.clusters.0.cluster.certificate-authority-data)
   }
 }
 
@@ -135,7 +151,7 @@ DOCKER
 }
 
 data "kubectl_path_documents" "sb_manifests" {
-  pattern = "${path.module}/shapeblock/*.yaml"
+  pattern = "${path.module}/crds/*.yaml"
 }
 
 // SB service
@@ -269,11 +285,11 @@ resource "random_uuid" "cluster_uuid" {
 
 locals {
   sb_operator_values = templatefile("${path.module}/sb-operator.yaml.tpl", {
-    image             = var.sb_operator_image,
-    tag               = var.sb_operator_tag,
-    sb_url = "http://shapeblock-api",
+    image        = var.sb_operator_image,
+    tag          = var.sb_operator_tag,
+    sb_url       = "http://shapeblock-api",
     cluster_uuid = random_uuid.cluster_uuid.result,
-    namespace = "shapeblock"
+    namespace    = "shapeblock"
   })
 }
 // SB operator

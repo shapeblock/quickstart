@@ -1,0 +1,36 @@
+# infra details
+
+cluster_name = "lakshmi-test"
+region       = "blr1"
+nodes = [
+  {
+    name = "master"
+    size = "s-2vcpu-4gb"
+  },
+  {
+    name = "worker-01"
+    size = "s-2vcpu-4gb"
+  }
+]
+kubernetes_version = "v1.30.3+k3s1"
+
+
+# Email used by Lets Encrypt certificate issuer
+email = "you@example.com"
+
+# Registry details. Replace with your registry credentials
+registry_url      = "https://index.docker.io/v1/"
+registry_username = "username"
+registry_password = "xxxx"
+
+# Secret keys required for the Backend API
+# Can be generated at https://fernetkeygen.com/
+fernet_keys = "dFuJmemvQLSixKJPTXiCRsN5p2350rVg0LHknPSU6_A=, 3wAl5W6Av7Sq8tAxTxi3ZYRyBakAbRP-RCQExgl0MBs="
+# Can be generated at https://djecrety.ir/
+secret_key = ")l2nm_m3vxd6uwzp$ic-0^%l^5_(_^v!m46ay3&h68zfez*6ru"
+
+# Github token with read access to public repos.
+github_token = "gh_xxxx"
+
+# The TLD for your cluster. Can also be a subdomain.
+cluster_dns = "example.com"

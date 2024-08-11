@@ -1,3 +1,33 @@
+variable "cluster_name" {
+  description = "Name of the cluster"
+  type        = string
+}
+
+variable "region" {
+  description = "Cloud provider region"
+  type        = string
+}
+
+variable "image" {
+  type        = string
+  default     = "ubuntu-24-04-x64"
+  description = "Base image for the VMs"
+}
+
+variable "nodes" {
+  type = list(object({
+    name = string
+    size = string
+  }))
+  description = "Cluster nodes config"
+}
+
+variable "kubernetes_version" {
+  description = "kubernetes version to install"
+  type        = string
+}
+
+// SB stuff
 variable "email" {
   description = "Email used for Lets Encrypt certificate issuer"
 }
@@ -32,6 +62,10 @@ variable "cluster_dns" {
   default     = null
 }
 
+variable "github_token" {
+  description = "Github token for reading contents of public repos."
+  sensitive   = true
+}
 
 variable "sb_image" {
   description = "Shapeblock image repo"
@@ -53,41 +87,7 @@ variable "sb_operator_tag" {
   default     = "v1.0.0"
 }
 
-variable "sb_user" {
-  description = "Shapeblock backend user"
-  default     = "admin"
-}
-
-variable "sb_password" {
-  description = "Shapeblock backend user password"
-  default     = null
-  sensitive   = true
-}
-
-
-variable "database_name" {
-  description = "Shapeblock DB name"
-  default     = "shapeblock"
-}
-
-variable "database_user" {
-  description = "Shapeblock DB user"
-  default     = "shapeblock"
-}
-
-variable "database_password" {
-  description = "Shapeblock DB password"
-  default     = "shapeblock"
-  sensitive   = true
-}
-
-variable "database_admin_password" {
-  description = "Shapeblock DB  admin password"
-  default     = "shapeblock"
-  sensitive   = true
-}
-
-variable "github_token" {
-  description = "Github token for reading contents of public repos."
-  sensitive   = true
+variable "debug" {
+  type    = bool
+  default = true
 }
