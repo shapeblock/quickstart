@@ -106,7 +106,7 @@ ingresses:
       issuerType: cluster-issuer
     hosts:
     - paths:
-      - serviceName: django
+      - serviceName: api
         servicePort: 8000
     ingressClassName: nginx
     name: backend

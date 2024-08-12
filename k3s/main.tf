@@ -85,7 +85,7 @@ resource "null_resource" "fetch_kubeconfig" {
     }
 
     inline = [
-      "sed 's|https://127.0.0.1:6443|https://${local.master_ip}:6443|g' /etc/rancher/k3s/k3s.yaml > /tmp/kubeconfig.yaml"
+      "sed 's|https://127.0.0.1:6443|https://${local.master_ip}:6443|g' /etc/rancher/k3s/k3s.yaml > /root/kubeconfig.yaml"
     ]
   }
   depends_on = [yoshik3s_worker_node.worker_nodes]
@@ -99,6 +99,11 @@ data "remote_file" "kubeconfig" {
     private_key = var.ssh_key
   }
 
-  path       = "/tmp/kubeconfig.yaml"
+  path       = "/root/kubeconfig.yaml"
   depends_on = [null_resource.fetch_kubeconfig]
+}
+
+resource "local_file" "kubeconfig" {
+  filename = "${path.module}/kubeconfig"
+  content  = data.remote_file.kubeconfig.content
 }

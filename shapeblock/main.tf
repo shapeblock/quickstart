@@ -28,7 +28,6 @@ provider "helm" {
   }
 }
 
-
 resource "kubernetes_namespace" "shapeblock" {
   metadata {
     name = "shapeblock"
@@ -48,14 +47,16 @@ resource "helm_release" "ingress" {
 // cert manager
 resource "helm_release" "cert_manager" {
   name       = "cert-manager"
-  repository = "https://charts.jetstack.io"
+  repository = "https://charts.bitnami.com/bitnami"
   chart      = "cert-manager"
-  version    = "v1.15.2"
-  namespace  = "shapeblock"
+  version    = "1.3.16"
+  namespace  = "cert-manager"
   set {
     name  = "installCRDs"
     value = true
   }
+  timeout    = 600
+  create_namespace = true
 }
 
 resource "kubectl_manifest" "cluster_issuer" {
@@ -256,12 +257,6 @@ locals {
   })
 }
 
-// Turn on for debugging purposes
-# resource "local_file" "sb_values" {
-#   content  = local.sb_values
-#   filename = "${path.module}/sb-values.yaml"
-# }
-
 // Backend
 resource "helm_release" "shapeblock" {
   name       = "shapeblock"
@@ -271,7 +266,7 @@ resource "helm_release" "shapeblock" {
   version    = "2.8.0"
 
   values     = [local.sb_values]
-  depends_on = [helm_release.postgresql, helm_release.redis]
+  depends_on = [helm_release.postgresql, helm_release.redis, kubectl_manifest.cluster_issuer]
 }
 
 resource "kubectl_manifest" "shapeblock_crs" {

@@ -102,10 +102,3 @@ resource "null_resource" "set_permissions" {
     command = "chmod 400 ${path.module}/private-key"
   }
 }
-
-// debug artifacts
-resource "local_file" "kubeconfig" {
-  filename = "${path.module}/kubeconfig"
-  content  = module.k3s.kubeconfig
-  count    = var.debug ? 1 : 0
-}
