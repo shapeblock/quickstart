@@ -68,6 +68,7 @@ envs:
   DEFAULT_FROM_EMAIL: ${email}
   SB_USERNAME: ${user}
   SB_USER_EMAIL: ${email}
+  CONTROL_PLANE_IP: ${control_plane_ip}
 
 generic:
   extraImagePullSecrets:

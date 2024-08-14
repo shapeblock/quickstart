@@ -327,7 +327,8 @@ locals {
     database_password = var.database_password,
     email             = var.email,
     user              = var.sb_user,
-    password          = local.sb_password
+    password          = local.sb_password,
+    control_plane_ip  = local.kubeconfig.clusters.0.cluster.server
   })
 }
 
