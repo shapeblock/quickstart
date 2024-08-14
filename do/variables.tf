@@ -32,19 +32,6 @@ variable "email" {
   description = "Email used for Lets Encrypt certificate issuer"
 }
 
-variable "registry_url" {
-  description = "Container registry url. Use \"https://index.docker.io/v1/\" for dockerhub."
-}
-
-variable "registry_username" {
-  description = "Container registry username"
-}
-
-variable "registry_password" {
-  description = "Container registry password"
-  sensitive   = true
-}
-
 // Can be generated at https://djecrety.ir/
 variable "secret_key" {
   description = "Backend App secret key"

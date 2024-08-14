@@ -74,9 +74,6 @@ module "shapeblock" {
   source            = "../shapeblock"
   kubeconfig        = module.k3s.kubeconfig
   email             = var.email
-  registry_url      = var.registry_url
-  registry_username = var.registry_username
-  registry_password = var.registry_password
   secret_key        = var.secret_key
   fernet_keys       = var.fernet_keys
   github_token      = var.github_token

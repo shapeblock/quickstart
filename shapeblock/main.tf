@@ -130,6 +130,81 @@ locals {
   ingress_ip       = data.kubernetes_service.ingress_controller.status.0.load_balancer.0.ingress.0.ip
 }
 
+resource "random_password" "registry_password" {
+  length = 30
+}
+
+resource "null_resource" "encrypted_registry_password" {
+  triggers = {
+    orig = random_password.registry_password.result
+    pw   = bcrypt(random_password.registry_password.result)
+  }
+
+  lifecycle {
+    ignore_changes = [triggers["pw"]]
+  }
+}
+
+// registry
+resource "helm_release" "registry" {
+  name       = "registry"
+  chart      = "docker-registry"
+  repository = "https://helm.twun.io"
+  version    = "2.2.3"
+  namespace = "shapeblock"
+
+  set {
+    name  = "persistence.enabled"
+    value = true
+  }
+
+  set {
+    name  = "persistence.size"
+    value = "30Gi" //var.registry_storage_size
+  }
+
+  set {
+    name  = "ingress.enabled"
+    value = true
+  }
+
+  set {
+    name  = "ingress.hosts[0]"
+    value = format("registry.%s", var.cluster_dns)
+  }
+
+  set {
+    name  = "ingress.tls[0].hosts[0]"
+    value = format("registry.%s", var.cluster_dns)
+  }
+
+  set {
+    name  = "ingress.tls[0].secretName"
+    value = "registry-tls"
+  }
+
+  set {
+    name  = "ingress.annotations.cert-manager\\.io/cluster-issuer"
+    value = "letsencrypt-prod"
+  }
+
+  set {
+    name  = "ingress.annotations.nginx\\.ingress\\.kubernetes\\.io/proxy-body-size"
+    value = "0"
+  }
+
+  set {
+    name  = "secrets.htpasswd"
+    value = format("admin:%s", null_resource.encrypted_registry_password.triggers["pw"])
+  }
+
+  set {
+    name  = "updateStrategy.type"
+    value = "Recreate"
+  }
+  depends_on = [kubectl_manifest.cluster_issuer]
+}
+
 resource "kubernetes_secret" "container_registry" {
   metadata {
     name      = "registry-creds"
@@ -140,15 +215,14 @@ resource "kubernetes_secret" "container_registry" {
     ".dockerconfigjson" = <<DOCKER
 {
   "auths": {
-    "registry.${var.registry_url}": {
-      "auth": "${base64encode("${var.registry_username}:${var.registry_password}")}"
+    "registry.${var.cluster_dns}": {
+      "auth": "${base64encode("admin:${random_password.registry_password.result}")}"
     }
   }
 }
 DOCKER
   }
-
-  type = "kubernetes.io/dockerconfigjson"
+  type  = "kubernetes.io/dockerconfigjson"
 }
 
 data "kubectl_path_documents" "sb_manifests" {
@@ -282,7 +356,7 @@ locals {
   sb_operator_values = templatefile("${path.module}/sb-operator.yaml.tpl", {
     image        = var.sb_operator_image,
     tag          = var.sb_operator_tag,
-    sb_url       = "http://shapeblock-api",
+    sb_url       = "https://sb.${var.cluster_dns}",
     cluster_uuid = random_uuid.cluster_uuid.result,
     namespace    = "shapeblock"
   })
