@@ -1,6 +1,6 @@
 # Quickstart examples for Shapeblock
 
-Quickly stand up an HA-style installation of Rancher by SUSE products on your infrastructure provider of choice.
+Quickly setup Shapeblock on your favorite infrastructure provider.
 
 Intended for experimentation/evaluation ONLY.
 
@@ -60,7 +60,7 @@ For more details on each cloud provider, refer to the documentation in their res
 
 ## Remove
 
-When you're finished exploring the Rancher server, use terraform to tear down all resources in the quickstart.
+When you're finished exploring the Shapeblock setup, use terraform to tear down all resources in the quickstart.
 
 **NOTE: Any resources not provisioned by the quickstart are not guaranteed to be destroyed when tearing down the quickstart.**
 Make sure you tear down any resources you provisioned manually before running the destroy command.
