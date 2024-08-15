@@ -88,7 +88,7 @@ resource "null_resource" "fetch_kubeconfig" {
       "sed 's|https://127.0.0.1:6443|https://${local.master_ip}:6443|g' /etc/rancher/k3s/k3s.yaml > /root/kubeconfig.yaml"
     ]
   }
-  depends_on = [yoshik3s_worker_node.worker_nodes]
+  depends_on = [time_sleep.wait_30_seconds_master]
 }
 
 data "remote_file" "kubeconfig" {

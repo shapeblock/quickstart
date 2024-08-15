@@ -19,6 +19,10 @@ terraform {
   }
 }
 
+locals {
+  cluster_dns = (var.cluster_dns != null) ? var.cluster_dns : "${digitalocean_droplet.nodes.0.ipv4_address}.nip.io"
+}
+
 resource "random_id" "ssh_key_id" {
   byte_length = 8
 }
@@ -77,7 +81,7 @@ module "shapeblock" {
   secret_key        = var.secret_key
   fernet_keys       = var.fernet_keys
   github_token      = var.github_token
-  cluster_dns       = var.cluster_dns
+  cluster_dns       = local.cluster_dns
   sb_image          = var.sb_image
   sb_tag            = var.sb_tag
   sb_operator_image = var.sb_operator_image
