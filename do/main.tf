@@ -19,10 +19,6 @@ terraform {
   }
 }
 
-locals {
-  cluster_dns = (var.cluster_dns != null) ? var.cluster_dns : "${digitalocean_droplet.nodes.0.ipv4_address}.nip.io"
-}
-
 resource "random_id" "ssh_key_id" {
   byte_length = 8
 }
@@ -72,6 +68,10 @@ module "k3s" {
   kubernetes_version = var.kubernetes_version
   ssh_key            = tls_private_key.ssh_key.private_key_openssh
   depends_on         = [time_sleep.wait_30_seconds_nodes]
+}
+
+locals {
+  cluster_dns = (var.cluster_dns != null) ? var.cluster_dns : "${local.nodes.0.ip}.nip.io"
 }
 
 module "shapeblock" {
