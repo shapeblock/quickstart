@@ -55,7 +55,7 @@ resource "helm_release" "cert_manager" {
     name  = "installCRDs"
     value = true
   }
-  timeout    = 600
+  timeout          = 600
   create_namespace = true
 }
 
@@ -151,7 +151,7 @@ resource "helm_release" "registry" {
   chart      = "docker-registry"
   repository = "https://helm.twun.io"
   version    = "2.2.3"
-  namespace = "shapeblock"
+  namespace  = "shapeblock"
 
   set {
     name  = "persistence.enabled"
@@ -222,7 +222,7 @@ resource "kubernetes_secret" "container_registry" {
 }
 DOCKER
   }
-  type  = "kubernetes.io/dockerconfigjson"
+  type = "kubernetes.io/dockerconfigjson"
 }
 
 data "kubectl_path_documents" "sb_manifests" {
@@ -316,19 +316,21 @@ locals {
 
 locals {
   sb_values = templatefile("${path.module}/sb-values.yaml.tpl", {
-    image             = var.sb_image,
-    tag               = var.sb_tag,
-    secret_key        = var.secret_key,
-    github_token      = var.github_token,
-    fernet_keys       = var.fernet_keys,
-    cluster_dns       = var.cluster_dns,
-    database_name     = var.database_name,
-    database_user     = var.database_user,
-    database_password = var.database_password,
-    email             = var.email,
-    user              = var.sb_user,
-    password          = local.sb_password,
-    control_plane_ip  = local.kubeconfig.clusters.0.cluster.server
+    image                = var.sb_image,
+    tag                  = var.sb_tag,
+    secret_key           = var.secret_key,
+    github_token         = var.github_token,
+    github_client_key    = var.github_client_key,
+    github_client_secret = var.github_client_secret,
+    fernet_keys          = var.fernet_keys,
+    cluster_dns          = var.cluster_dns,
+    database_name        = var.database_name,
+    database_user        = var.database_user,
+    database_password    = var.database_password,
+    email                = var.email,
+    user                 = var.sb_user,
+    password             = local.sb_password,
+    control_plane_ip     = local.kubeconfig.clusters.0.cluster.server
   })
 }
 

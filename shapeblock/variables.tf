@@ -79,6 +79,16 @@ variable "github_token" {
   sensitive   = true
 }
 
+variable "github_client_key" {
+  description = "Github client key for accessing your private repos."
+  sensitive   = true
+}
+
+variable "github_client_secret" {
+  description = "Github client secret for accessing your private repos."
+  sensitive   = true
+}
+
 variable "kubeconfig" {
   description = "Kubeconfig YAML"
   type        = string

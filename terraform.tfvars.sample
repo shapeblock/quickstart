@@ -17,3 +17,7 @@ github_token = "gh_xxxx"
 
 # The TLD for your cluster. Can also be a subdomain.
 cluster_dns = "example.com"
+
+# Not mandatory, but you can't deploy private repositories without this
+# github_client_key = ""
+# github_client_secret = ""

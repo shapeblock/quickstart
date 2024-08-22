@@ -75,17 +75,19 @@ module "k3s" {
 }
 
 module "shapeblock" {
-  source            = "../shapeblock"
-  kubeconfig        = module.k3s.kubeconfig
-  email             = var.email
-  secret_key        = var.secret_key
-  fernet_keys       = var.fernet_keys
-  github_token      = var.github_token
-  cluster_dns       = local.cluster_dns
-  sb_image          = var.sb_image
-  sb_tag            = var.sb_tag
-  sb_operator_image = var.sb_operator_image
-  sb_operator_tag   = var.sb_operator_tag
+  source               = "../shapeblock"
+  kubeconfig           = module.k3s.kubeconfig
+  email                = var.email
+  secret_key           = var.secret_key
+  fernet_keys          = var.fernet_keys
+  github_token         = var.github_token
+  github_client_key    = var.github_client_key
+  github_client_secret = var.github_client_secret
+  cluster_dns          = local.cluster_dns
+  sb_image             = var.sb_image
+  sb_tag               = var.sb_tag
+  sb_operator_image    = var.sb_operator_image
+  sb_operator_tag      = var.sb_operator_tag
 }
 
 // debug artifacts

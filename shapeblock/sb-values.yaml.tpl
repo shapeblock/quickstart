@@ -81,7 +81,13 @@ generic:
 releasePrefix: shapeblock
 secretEnvs:
   SECRET_KEY: "${secret_key}"
-  GH_TOKEN: "${github_token}"
+  GITHUB_TOKEN: "${github_token}"
+  %{ if github_client_key != null }
+  GITHUB_CLIENT_KEY: "${github_client_key}"
+  %{ endif }
+  %{ if github_client_secret != null }
+  GITHUB_CLIENT_SECRET: "${github_client_secret}"
+  %{ endif }
   FERNET_KEYS: "${fernet_keys}"
   SB_USER_PASSWORD: "${password}"
 
